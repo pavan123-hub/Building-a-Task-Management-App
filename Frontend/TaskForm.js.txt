@@ -1,0 +1,58 @@
+// TaskForm.js
+import React, { useState } from 'react';
+
+const TaskForm = ({ addTask }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addTask(formData);
+    setFormData({
+      title: '',
+      description: '',
+    });
+  };
+
+  return (
+    <div>
+      <h2>Add New Task</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Title</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <button type="submit">Add Task</button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default TaskForm;

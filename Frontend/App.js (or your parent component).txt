@@ -1,0 +1,20 @@
+// App.js (or your parent component)
+import React from 'react';
+import HomePage from './HomePage';
+
+const App = () => {
+  // Define your list of tasks here or fetch it from an API
+  const tasks = [
+    { id: 1, title: 'Task 1', description: 'Description 1' },
+    { id: 2, title: 'Task 2', description: 'Description 2' },
+    { id: 3, title: 'Task 3', description: 'Description 3' },
+  ];
+
+  return (
+    <div>
+      <HomePage tasks={tasks} />
+    </div>
+  );
+};
+
+export default App;

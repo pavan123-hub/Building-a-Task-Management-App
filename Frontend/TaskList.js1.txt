@@ -1,0 +1,23 @@
+// TaskList.js
+import React from 'react';
+
+const TaskList = ({ tasks, markAsCompleted }) => {
+  return (
+    <div>
+      <h2>Task List</h2>
+      <ul>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+            {!task.completed && (
+              <button onClick={() => markAsCompleted(task.id)}>Mark as Completed</button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TaskList;

@@ -1,0 +1,22 @@
+// HomePage.js
+import React, { useState } from 'react';
+import TaskList from './TaskList';
+import TaskForm from './TaskForm';
+
+const HomePage = () => {
+  const [tasks, setTasks] = useState([]); // State to store tasks
+
+  const addTask = (newTask) => {
+    setTasks([...tasks, newTask]);
+  };
+
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <TaskForm addTask={addTask} />
+      <TaskList tasks={tasks} />
+    </div>
+  );
+};
+
+export default HomePage;

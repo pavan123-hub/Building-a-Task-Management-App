@@ -1,0 +1,83 @@
+const express = require("express");
+const server = express();
+server.use(express.json());
+
+// Sample data for tasks
+const tasks = [
+  { id: 1, title: "Task 1", description: "Description 1" },
+  { id: 2, title: "Task 2", description: "Description 2" },
+  { id: 3, title: "Task 3", description: "Description 3" },
+];
+
+// Middleware for logging requests
+server.use((req, res, next) => {
+  console.time("Request");
+  console.log(`Method: ${req.method}; URL: ${req.url}; `);
+  next();
+  console.timeEnd("Request");
+});
+
+// Middleware to check if a task with the given ID exists
+function checkTaskExists(req, res, next) {
+  const taskId = parseInt(req.params.id);
+  const task = tasks.find((t) => t.id === taskId);
+
+  if (!task) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+
+  req.task = task;
+  next();
+}
+
+// GET all tasks
+server.get("/tasks", (req, res) => {
+  return res.json(tasks);
+});
+
+// GET task by ID
+server.get("/tasks/:id", checkTaskExists, (req, res) => {
+  return res.json(req.task);
+});
+
+// POST new task
+server.post("/tasks", (req, res) => {
+  const { title, description } = req.body;
+  if (!title || !description) {
+    return res.status(400).json({ error: "Title and description are required" });
+  }
+
+  const newTask = { id: tasks.length + 1, title, description };
+  tasks.push(newTask);
+
+  return res.status(201).json(newTask);
+});
+
+// PUT update task by ID
+server.put("/tasks/:id", checkTaskExists, (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+
+  if (!title || !description) {
+    return res.status(400).json({ error: "Title and description are required" });
+  }
+
+  const taskIndex = tasks.findIndex((t) => t.id === parseInt(id));
+  tasks[taskIndex] = { ...tasks[taskIndex], title, description };
+
+  return res.json(tasks[taskIndex]);
+});
+
+// DELETE task by ID
+server.delete("/tasks/:id", checkTaskExists, (req, res) => {
+  const { id } = req.params;
+  const taskIndex = tasks.findIndex((t) => t.id === parseInt(id));
+
+  tasks.splice(taskIndex, 1);
+
+  return res.send();
+});
+
+server.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});

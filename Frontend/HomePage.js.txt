@@ -1,0 +1,14 @@
+// HomePage.js
+import React from 'react';
+import TaskList from './TaskList';
+
+const HomePage = ({ tasks }) => {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <TaskList tasks={tasks} />
+    </div>
+  );
+};
+
+export default HomePage;
